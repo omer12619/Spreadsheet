@@ -11,6 +11,9 @@ namespace SharableSpreadSheet
     {
         private string[,] m_spreadSheet;
         private LinkedList<Thread> m_threads;
+        private Mutex[] m_colMutex;
+        private Mutex[] m_rowMutex;
+        
 
         public SharableSpreadSheet(int nRows, int nCols, int nUsers = -1)
         {
@@ -18,6 +21,9 @@ namespace SharableSpreadSheet
             // construct a nRows*nCols spreadsheet
             m_spreadSheet = new string[nRows, nCols];
             m_threads = new LinkedList<Thread>();
+            m_colMutex = new Mutex[nCols];
+            m_rowMutex = new Mutex[nRows];
+            
 
         }
         public string getCell(int row, int col)

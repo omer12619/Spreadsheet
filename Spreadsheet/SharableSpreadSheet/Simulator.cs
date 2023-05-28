@@ -8,7 +8,7 @@ namespace SharableSpreadSheet
 {
     internal class Simulator
     {
-        SharableSpreadSheet SharableSpreadSheet = new SharableSpreadSheet();
+        //SharableSpreadSheet SharableSpreadSheet = new SharableSpreadSheet();
 
     }
 }
