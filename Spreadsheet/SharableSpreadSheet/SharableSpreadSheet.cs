@@ -27,20 +27,31 @@ namespace SharableSpreadSheet
         }
         public string getCell(int row, int col)
         {
-            m_users.Wait()
+            m_users.WaitOne();// TODO maybe the get functions need to use the mutex and not the semaphore
+            string value = m_spreadSheet[row, col]; 
+            m_users.Release();
             // return the string at [row,col]
-            return m_spreadSheet[row, col];
+            return value;
         }
         public void setCell(int row, int col, string str)
         {
+            /**
+             * If we lock A,B,C
+             * Then we need to release C,B,A*
+             */
+            
+            m_colMutex[col].WaitOne();
+            m_rowMutex[row].WaitOne();
             // set the string at [row,col]
             m_spreadSheet[row, col] = str;
+            m_rowMutex[row].ReleaseMutex();
+            m_colMutex[col].ReleaseMutex();
 
         }
         public Tuple<int, int> searchString(string str)
         {
             // return first cell indexes that contains the string (search from first row to the last row)
-
+            m_users.WaitOne();
             int row, col;
             for (int i = 0; i < m_spreadSheet.GetLength(0); i++)
             {
@@ -48,16 +59,20 @@ namespace SharableSpreadSheet
                 {
                     if (m_spreadSheet[i, j] == str)
                     {
-
-                        return new Tuple<int, int>(i, j);
+                        Tuple<int, int> res = new Tuple<int, int>(i, j);
+                        m_users.Release();
+                        return res;
                     }
                 }
             }
-
+            m_users.Release();
             return null;
         }
         public void exchangeRows(int row1, int row2)
         {
+            m_rowMutex[row1].WaitOne();
+            m_rowMutex[row2].WaitOne();
+
             string[] rowA = new string[m_spreadSheet.GetLength(1)];
             string[] rowB = new string[m_spreadSheet.GetLength(1)];
 
@@ -76,10 +91,13 @@ namespace SharableSpreadSheet
             }
 
             // exchange the content of row1 and row2
-
+            m_rowMutex[row2].ReleaseMutex();
+            m_rowMutex[row1].ReleaseMutex();
         }
         public void exchangeCols(int col1, int col2)
         {
+            m_rowMutex[col1].WaitOne();
+            m_rowMutex[col2].WaitOne();
             string[] colA = new string[m_spreadSheet.GetLength(0)];
             string[] colB = new string[m_spreadSheet.GetLength(0)];
 
@@ -97,9 +115,14 @@ namespace SharableSpreadSheet
                 m_spreadSheet[i, col1] = a;
             }
             // exchange the content of col1 and col2
+            m_rowMutex[col2].ReleaseMutex();
+            m_rowMutex[col1].ReleaseMutex();
         }
+        
         public int searchInRow(int row, string str)
         {
+            m_users.WaitOne();
+
             int col;
             string[] searchRow = new string[m_spreadSheet.GetLength(1)];
             for (int i = 0; i < m_spreadSheet.GetLength(1); i++)
@@ -111,14 +134,19 @@ namespace SharableSpreadSheet
             {
                 if (searchRow[i].Equals(str))
                 {
-                    return i;
+                    int res = i;
+                    m_users.Release();
+                    return res;
                 }
             }
             // perform search in specific row
+            m_users.Release();
             return -1;
         }
+        
         public int searchInCol(int col, string str)
         {
+            m_users.WaitOne();
             int row;
             string[] searchCol = new string[m_spreadSheet.GetLength(0)];
             for (int i = 0; i < m_spreadSheet.GetLength(0); i++)
@@ -130,14 +158,20 @@ namespace SharableSpreadSheet
             {
                 if (searchCol[i].Equals(str))
                 {
+                    int res = i;
+                    m_users.Release();
                     return i;
                 }
             }
             // perform search in specific col
+            m_users.Release();
+
             return -1;
         }
         public Tuple<int, int> searchInRange(int col1, int col2, int row1, int row2, string str)
         {
+            m_users.WaitOne();
+
             int row, col;
             // perform search within spesific range: [row1:row2,col1:col2] 
             //includes col1,col2,row1,row2
@@ -148,14 +182,27 @@ namespace SharableSpreadSheet
                 {
                     if (m_spreadSheet[i, j].Equals(str))
                     {
-                        return new Tuple<int, int>(i, j);
+                        m_users.Release();
+                        Tuple<int, int> res = new Tuple<int, int>(i, j);
+                        return res;
                     }
                 }
             }
+            m_users.Release();
+
             return null;
         }
         public void addRow(int row1)
         {
+            for (int i = 0; i < m_colMutex.Length; i++)
+            {
+                m_colMutex[i].WaitOne();
+            }
+            
+            for (int i = 0; i < m_rowMutex.Length; i++)
+            {
+                m_rowMutex[i].WaitOne();
+            }
             // add a row after row1
             int numRows = m_spreadSheet.GetLength(0);
             int numCols = m_spreadSheet.GetLength(1);
@@ -181,11 +228,30 @@ namespace SharableSpreadSheet
             }
 
             m_spreadSheet = newSpreadSheet;
+
+            for (int i = m_rowMutex.Length - 1; i >= 0; i--)
+            {
+                m_rowMutex[i].ReleaseMutex();
+            }
+            
+            for (int i = m_colMutex.Length - 1; i >= 0; i--)
+            {
+                m_colMutex[i].ReleaseMutex();
+            }
         }
 
 
         public void addCol(int col1)
         {
+            for (int i = 0; i < m_colMutex.Length; i++)
+            {
+                m_colMutex[i].WaitOne();
+            }
+            
+            for (int i = 0; i < m_rowMutex.Length; i++)
+            {
+                m_rowMutex[i].WaitOne();
+            }
             // add a column after col1
             int numRows = m_spreadSheet.GetLength(0);
             int numCols = m_spreadSheet.GetLength(1);
@@ -206,11 +272,21 @@ namespace SharableSpreadSheet
                     }
                 }
             }
-
             m_spreadSheet = newSpreadSheet;
+            
+            for (int i = m_rowMutex.Length - 1; i >= 0; i--)
+            {
+                m_rowMutex[i].ReleaseMutex();
+            }
+            
+            for (int i = m_colMutex.Length - 1; i >= 0; i--)
+            {
+                m_colMutex[i].ReleaseMutex();
+            }
         }
         public Tuple<int, int>[] FindAll(string str, bool caseSensitive)
         {
+            m_users.WaitOne();
             List<Tuple<int, int>> cellList = new List<Tuple<int, int>>();
 
             for (int i = 0; i < m_spreadSheet.GetLength(0); i++)
@@ -236,11 +312,13 @@ namespace SharableSpreadSheet
                 }
             }
 
+            m_users.Release();
             return cellList.ToArray();
         }
 
         public void SetAll(string oldStr, string newStr, bool caseSensitive)
         {
+            
             // replace all oldStr cells with the newStr str according to caseSensitive param
             for (int i = 0; i < m_spreadSheet.GetLength(0); i++)
             {
@@ -265,17 +343,33 @@ namespace SharableSpreadSheet
                 }
             }
         }
+        
         public Tuple<int, int> GetSize()
         {
+            m_users.WaitOne();
+
             int nRows = m_spreadSheet.GetLength(0);
             int nCols = m_spreadSheet.GetLength(1);
 
             // return the size of the spreadsheet in nRows, nCols
-            return Tuple.Create(nRows, nCols);
+            Tuple<int, int> res = new Tuple<int, int>(nRows, nCols);
+            
+            m_users.Release();
+            
+            return res;
         }
 
         public void Save(string fileName)
         {
+            for (int i = 0; i < m_colMutex.Length; i++)
+            {
+                m_colMutex[i].WaitOne();
+            }
+            
+            for (int i = 0; i < m_rowMutex.Length; i++)
+            {
+                m_rowMutex[i].WaitOne();
+            }
             // Specify the file name
             string filePath = "C:/Users/" + Environment.UserName + "/Desktop/" + fileName;
 
@@ -293,9 +387,29 @@ namespace SharableSpreadSheet
 
                 }
             }
+            
+            for (int i = m_rowMutex.Length - 1; i >= 0; i--)
+            {
+                m_rowMutex[i].ReleaseMutex();
+            }
+            
+            for (int i = m_colMutex.Length - 1; i >= 0; i--)
+            {
+                m_colMutex[i].ReleaseMutex();
+            }
         }
         public void load(string fileName)
         {
+            for (int i = 0; i < m_colMutex.Length; i++)
+            {
+                m_colMutex[i].WaitOne();
+            }
+            
+            for (int i = 0; i < m_rowMutex.Length; i++)
+            {
+                m_rowMutex[i].WaitOne();
+            }
+            
             string filePath = "C:/Users/" + Environment.UserName + "/Desktop/" + fileName;
 
             // Check if the file exists
@@ -330,8 +444,15 @@ namespace SharableSpreadSheet
             {
                 Console.WriteLine("File not found: " + fileName);
             }
+            for (int i = m_rowMutex.Length - 1; i >= 0; i--)
+            {
+                m_rowMutex[i].ReleaseMutex();
+            }
+            
+            for (int i = m_colMutex.Length - 1; i >= 0; i--)
+            {
+                m_colMutex[i].ReleaseMutex();
+            }
         }
-
-
     }
 }
