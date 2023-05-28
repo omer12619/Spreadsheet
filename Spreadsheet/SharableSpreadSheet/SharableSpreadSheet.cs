@@ -10,18 +10,24 @@ namespace SharableSpreadSheet
     class SharableSpreadSheet
     {
         private string[,] m_spreadSheet;
-        private LinkedList<Thread> m_threads;
+        private Mutex[] m_colMutex;
+        private Mutex[] m_rowMutex;
+        private Semaphore m_users;
+        
 
         public SharableSpreadSheet(int nRows, int nCols, int nUsers = -1)
         {
             // nUsers used for setConcurrentSearchLimit, -1 mean no limit.
             // construct a nRows*nCols spreadsheet
             m_spreadSheet = new string[nRows, nCols];
-            m_threads = new LinkedList<Thread>();
+            m_colMutex = new Mutex[nCols];
+            m_rowMutex = new Mutex[nRows];
+            m_users = new Semaphore(0,nUsers);//TODO maybe it should start from zero?
 
         }
         public string getCell(int row, int col)
         {
+            m_users.Wait()
             // return the string at [row,col]
             return m_spreadSheet[row, col];
         }

@@ -8,3 +8,13 @@ C:\Users\marik\Desktop\university\2022-2023\Operation systems\Ass1\SharableSprea
 C:\Users\marik\Desktop\university\2022-2023\Operation systems\Ass1\SharableSpreadSheet\SharableSpreadSheet\obj\Debug\SharableSpreadSheet.csproj.CoreCompileInputs.cache
 C:\Users\marik\Desktop\university\2022-2023\Operation systems\Ass1\SharableSpreadSheet\SharableSpreadSheet\obj\Debug\SharableSpreadSheet.exe
 C:\Users\marik\Desktop\university\2022-2023\Operation systems\Ass1\SharableSpreadSheet\SharableSpreadSheet\obj\Debug\SharableSpreadSheet.pdb
+C:\Users\marik\Documents\GitHub\Spreadsheet\Spreadsheet\SharableSpreadSheet\obj\Debug\SharableSpreadSheet.csproj.AssemblyReference.cache
+C:\Users\marik\Documents\GitHub\Spreadsheet\Spreadsheet\SharableSpreadSheet\obj\Debug\SharableSpreadSheet.csproj.SuggestedBindingRedirects.cache
+C:\Users\marik\Documents\GitHub\Spreadsheet\Spreadsheet\SharableSpreadSheet\obj\Debug\SharableSpreadSheet.Properties.Resources.resources
+C:\Users\marik\Documents\GitHub\Spreadsheet\Spreadsheet\SharableSpreadSheet\obj\Debug\SharableSpreadSheet.csproj.GenerateResource.cache
+C:\Users\marik\Documents\GitHub\Spreadsheet\Spreadsheet\SharableSpreadSheet\obj\Debug\SharableSpreadSheet.csproj.CoreCompileInputs.cache
+C:\Users\marik\Documents\GitHub\Spreadsheet\Spreadsheet\SharableSpreadSheet\obj\Debug\SharableSpreadSheet.exe
+C:\Users\marik\Documents\GitHub\Spreadsheet\Spreadsheet\SharableSpreadSheet\obj\Debug\SharableSpreadSheet.pdb
+C:\Users\marik\Documents\GitHub\Spreadsheet\Spreadsheet\SharableSpreadSheet\bin\Debug\SharableSpreadSheet.exe.config
+C:\Users\marik\Documents\GitHub\Spreadsheet\Spreadsheet\SharableSpreadSheet\bin\Debug\SharableSpreadSheet.exe
+C:\Users\marik\Documents\GitHub\Spreadsheet\Spreadsheet\SharableSpreadSheet\bin\Debug\SharableSpreadSheet.pdb
