@@ -18,3 +18,13 @@ C:\Users\marik\Documents\GitHub\Spreadsheet\Spreadsheet\SharableSpreadSheet\obj\
 C:\Users\marik\Documents\GitHub\Spreadsheet\Spreadsheet\SharableSpreadSheet\bin\Debug\SharableSpreadSheet.exe.config
 C:\Users\marik\Documents\GitHub\Spreadsheet\Spreadsheet\SharableSpreadSheet\bin\Debug\SharableSpreadSheet.exe
 C:\Users\marik\Documents\GitHub\Spreadsheet\Spreadsheet\SharableSpreadSheet\bin\Debug\SharableSpreadSheet.pdb
+C:\Users\laufe\OneDrive\Documents\GitHub\Spreadsheet\Spreadsheet\SharableSpreadSheet\bin\Debug\SharableSpreadSheet.exe.config
+C:\Users\laufe\OneDrive\Documents\GitHub\Spreadsheet\Spreadsheet\SharableSpreadSheet\bin\Debug\SharableSpreadSheet.exe
+C:\Users\laufe\OneDrive\Documents\GitHub\Spreadsheet\Spreadsheet\SharableSpreadSheet\bin\Debug\SharableSpreadSheet.pdb
+C:\Users\laufe\OneDrive\Documents\GitHub\Spreadsheet\Spreadsheet\SharableSpreadSheet\obj\Debug\SharableSpreadSheet.csproj.AssemblyReference.cache
+C:\Users\laufe\OneDrive\Documents\GitHub\Spreadsheet\Spreadsheet\SharableSpreadSheet\obj\Debug\SharableSpreadSheet.csproj.SuggestedBindingRedirects.cache
+C:\Users\laufe\OneDrive\Documents\GitHub\Spreadsheet\Spreadsheet\SharableSpreadSheet\obj\Debug\SharableSpreadSheet.Properties.Resources.resources
+C:\Users\laufe\OneDrive\Documents\GitHub\Spreadsheet\Spreadsheet\SharableSpreadSheet\obj\Debug\SharableSpreadSheet.csproj.GenerateResource.cache
+C:\Users\laufe\OneDrive\Documents\GitHub\Spreadsheet\Spreadsheet\SharableSpreadSheet\obj\Debug\SharableSpreadSheet.csproj.CoreCompileInputs.cache
+C:\Users\laufe\OneDrive\Documents\GitHub\Spreadsheet\Spreadsheet\SharableSpreadSheet\obj\Debug\SharableSpreadSheet.exe
+C:\Users\laufe\OneDrive\Documents\GitHub\Spreadsheet\Spreadsheet\SharableSpreadSheet\obj\Debug\SharableSpreadSheet.pdb
