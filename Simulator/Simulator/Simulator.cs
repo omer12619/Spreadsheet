@@ -17,12 +17,12 @@ namespace Simulator
         private SharableSpreadSheet sharableSpreadSheet;
         private int usres;
         private int nOperations;
-        private int mssleep;
+        private int _msSleep;
         private Thread[] threads;
         private List<int> func_id;
         private List<String> animeNames;
 
-        public Simulator(int rows, int columns, int usres, int nOperations, int mssleep)
+        public Simulator(int rows, int columns, int usres, int nOperations, int msSleep)
         {
             this.rows = rows;
             this.columns = columns;
@@ -30,7 +30,7 @@ namespace Simulator
             sharableSpreadSheet.load("TextFile1.txt");
             this.usres = usres;
             this.nOperations = nOperations;
-            this.mssleep = mssleep;
+            this._msSleep = msSleep;
             threads = new Thread[usres];
             //add the idss of the functions
 
@@ -68,28 +68,9 @@ namespace Simulator
             };
             this.animeNames = animeNames.ToList();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             for (int i = 0; i < usres; i++)
             {
-                threads[i] = new Thread(new ThreadStart(() => UserRunnable(i, nOperations, sharableSpreadSheet, mssleep)));
+                threads[i] = new Thread(new ThreadStart(() => UserRunnable(i, nOperations, sharableSpreadSheet, msSleep)));
                 threads[i].Start();
             }
            
@@ -100,11 +81,6 @@ namespace Simulator
         {
 
             Shuffle(func_id);
-            
-
-
-
-
             for (int i = 0; i < nOperations; i++)
             {
                 int functionNumber = i; // The function number to check
@@ -260,32 +236,10 @@ namespace Simulator
 
                 }
             }
-            Thread.Sleep(this.mssleep);
+            Thread.Sleep(this._msSleep);
 
 
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         static void Shuffle<T>(List<T> list)
         {

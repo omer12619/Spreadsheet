@@ -5,7 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.IO;
 
-namespace SharableSpreadSheet
+namespace Simulator
 {
     class SharableSpreadSheet
     {

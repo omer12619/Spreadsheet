@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\laufe\\source\\repos\\Simulator\\Simulator\\Simulator.csproj": {}
+    "C:\\Users\\marik\\Documents\\GitHub\\Spreadsheet\\Simulator\\Simulator\\Simulator.csproj": {}
   },
   "projects": {
-    "C:\\Users\\laufe\\source\\repos\\Simulator\\Simulator\\Simulator.csproj": {
+    "C:\\Users\\marik\\Documents\\GitHub\\Spreadsheet\\Simulator\\Simulator\\Simulator.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\laufe\\source\\repos\\Simulator\\Simulator\\Simulator.csproj",
+        "projectUniqueName": "C:\\Users\\marik\\Documents\\GitHub\\Spreadsheet\\Simulator\\Simulator\\Simulator.csproj",
         "projectName": "Simulator",
-        "projectPath": "C:\\Users\\laufe\\source\\repos\\Simulator\\Simulator\\Simulator.csproj",
-        "packagesPath": "C:\\Users\\laufe\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\laufe\\source\\repos\\Simulator\\Simulator\\obj\\",
+        "projectPath": "C:\\Users\\marik\\Documents\\GitHub\\Spreadsheet\\Simulator\\Simulator\\Simulator.csproj",
+        "packagesPath": "C:\\Users\\marik\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\marik\\Documents\\GitHub\\Spreadsheet\\Simulator\\Simulator\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\laufe\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\marik\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
