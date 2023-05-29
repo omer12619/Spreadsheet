@@ -34,7 +34,7 @@ namespace SharableSpreadSheet
             //add the idss of the functions
 
             this.func_id = new List<int>();
-            for (int i = 0; i < 16; i++)
+            for (int i = 1; i < 15; i++)
             {
                 this.func_id.Add(i);
             }
