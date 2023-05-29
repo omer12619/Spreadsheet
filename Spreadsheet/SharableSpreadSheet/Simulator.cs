@@ -232,7 +232,8 @@ namespace SharableSpreadSheet
                 else if (functionNumber == 11)
                 {
                     Shuffle(animeNames);
-                    this.sharableSpreadSheet.FindAll(animeNames[0], false);
+                    
+                    Console.WriteLine("user number :" + userId + "get all the posison of the string " + animeNames[0]+ " :"+ this.sharableSpreadSheet.FindAll(animeNames[0], false));
 
                 }
                 else if (functionNumber == 12)
@@ -241,19 +242,21 @@ namespace SharableSpreadSheet
                     Shuffle(animeNames);
                     String str2 = animeNames[0];
                     this.sharableSpreadSheet.SetAll(str1, str2, false);
+                    Console.WriteLine("user number :" + userId + "set all "+str1+" to " +str2);
+
 
                 }
                 else if (functionNumber == 13)
                 {
-                    this.sharableSpreadSheet.GetSize();
+                    Console.WriteLine("user number :" + userId +" get the size of the sheet :" +this.sharableSpreadSheet.GetSize());
 
                 }
                 else if (functionNumber == 14)
                 {
-                    Random random = new Random();
-                    int var = random.Next(0, 10);
+                    Shuffle(animeNames);
 
-                    this.sharableSpreadSheet.Save("save_to_gile"+var);
+                    this.sharableSpreadSheet.Save(animeNames[0]+".txt");
+                    Console.WriteLine("user number :" + userId + "save the sheet to a file name :" + animeNames[0]);
 
                 }
             }
