@@ -21,7 +21,16 @@ namespace Simulator
             // construct a nRows*nCols spreadsheet
             m_spreadSheet = new string[nRows, nCols];
             m_colMutex = new Mutex[nCols];
+            for (int i = 0; i < nCols; i++)
+            {
+                m_colMutex[i] = new Mutex();
+            }
             m_rowMutex = new Mutex[nRows];
+            
+            for (int i = 0; i < nRows; i++)
+            {
+                m_rowMutex[i] = new Mutex();
+            }
             m_users = new Semaphore(0,nUsers);//TODO maybe it should start from zero?
 
         }
@@ -410,18 +419,50 @@ namespace Simulator
                 m_rowMutex[i].WaitOne();
             }
             
-            string filePath = "C:/Users/" + Environment.UserName + "/Desktop/" + fileName;
+            //string filePath = "C:/Users/" + Environment.UserName + "/Desktop/" + fileName;
+            //string currentDirectory = AppDomain.CurrentDomain.BaseDirectory;;
+
+            //string filePath = Path.Combine(currentDirectory, fileName);
+            
+            string currentDirectory = Directory.GetCurrentDirectory();
+            DirectoryInfo parentDirectory = Directory.GetParent(currentDirectory)?.Parent;
+            string filePath = parentDirectory.FullName + "\\" + fileName;
+
+
 
             // Check if the file exists
             if (File.Exists(filePath))
             {
-                using (StreamReader fileReader = new StreamReader(filePath))
+                StreamReader fileReader = new StreamReader(filePath);
+                
+                string line;
+                int rowIndex = 0; 
+                int numOfRows = 0;
+                int numOfCols = 0;
+                while ((line = fileReader.ReadLine()) != null)
                 {
-                    string line;
-                    int rowIndex = 0;
+                    numOfRows++;
+                    string[] values = line.Split(',');
+                    if (values.Length > numOfCols)
+                    {
+                        numOfCols = values.Length;
+                    }
 
+                }
+
+                m_spreadSheet = new string[numOfRows, numOfCols];
                     // Read lines from the file
-                    while ((line = fileReader.ReadLine()) != null)
+                fileReader = new StreamReader(filePath);
+                for (int i = 0; i < numOfRows; i++)
+                {
+                    line = fileReader.ReadLine();
+                    string[] values = line.Split(',');
+                    for (int j = 0; j < values.Length; j++)
+                    {
+                        m_spreadSheet[i, j] = values[j];
+                    }
+                }
+                    /*while ((line = fileReader.ReadLine()) != null)
                     {
                         // Split the line into values
                         string[] values = line.Split(' ');
@@ -435,10 +476,9 @@ namespace Simulator
                         }
 
                         rowIndex++;
-                    }
-                }
-
-                Console.WriteLine("Spreadsheet loaded successfully.");
+                    }*/ 
+                    
+                    Console.WriteLine("Spreadsheet loaded successfully.");
             }
             else
             {
