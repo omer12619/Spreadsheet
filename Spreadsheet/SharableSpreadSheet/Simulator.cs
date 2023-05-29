@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -119,7 +120,7 @@ namespace SharableSpreadSheet
                     int colm = random.Next(0, variable + 1);
 
                     int rows = random.Next(0, this.rows + 1);
-                    this.sharableSpreadSheet.getCell(rows, colm);
+                    Console.WriteLine("user number:"+userId+"fuction get cell in row:" + rows + "colm:" + colm + " :" + this.sharableSpreadSheet.getCell(rows, colm));
                 }
                 else if (functionNumber == 2)
                 {
@@ -135,11 +136,13 @@ namespace SharableSpreadSheet
 
 
                     this.sharableSpreadSheet.setCell(rows, colm, animeNames[0]);
+                    Console.WriteLine("user number:" + userId + "set cell row:" + rows + " set colm:" + colm + " to a string :" + animeNames[0]);
                 }
                 else if (functionNumber == 3)
                 {
                     Shuffle(animeNames);
                     this.sharableSpreadSheet.searchString(animeNames[0]);
+                    Console.WriteLine("user number:" + userId + "search a  string :" + animeNames[0]);
                 }
                 else if (functionNumber == 4)
                 {
@@ -151,7 +154,9 @@ namespace SharableSpreadSheet
                     int row1 = random.Next(0, variable + 1);
 
                     int row2 = random.Next(0, variable + 1);
+
                     this.sharableSpreadSheet.exchangeRows(row1,row2);
+                    Console.WriteLine("user number:" + userId + "exchange rows : "+ row1+","+row2);
 
                 }
                 else if (functionNumber == 5)
@@ -163,6 +168,7 @@ namespace SharableSpreadSheet
 
                     int colm2 = random.Next(0, variable + 1);
                     this.sharableSpreadSheet.exchangeCols( colm1,  colm2);
+                    Console.WriteLine("user number:" + userId + "exchange colm : " + colm1 + "," + colm2);
 
                 }
                 else if (functionNumber == 6)
@@ -175,6 +181,7 @@ namespace SharableSpreadSheet
                     int row1 = random.Next(0, variable + 1);
                     Shuffle(animeNames);
                     this.sharableSpreadSheet.searchInRow( row1, animeNames[0]);
+                    Console.WriteLine("user number:" + userId + "serch in row : " + row1 + " the string" + animeNames[0]);
 
                 }
                 else if (functionNumber == 7)
@@ -185,6 +192,7 @@ namespace SharableSpreadSheet
                     int col1 = random.Next(0, variable + 1);
                     Shuffle(animeNames);
                     this.sharableSpreadSheet.searchInCol( col1, animeNames[0]);
+                    Console.WriteLine("user number:" + userId + " serch in colm : " + col1 + " the string" + animeNames[0]);
 
                 }
                 else if (functionNumber == 8)
@@ -199,6 +207,7 @@ namespace SharableSpreadSheet
                     int row2 = random.Next(row1, variable + 1);
                     Shuffle(animeNames);
                     this.sharableSpreadSheet.searchInRange( col1,  col2,  row1,  row2, animeNames[0]);
+                    Console.WriteLine("user number:" + userId + " serach in rangee colm : " + col1+" ,"+ col2 + "serach in rangee rows:"+row1+", "+row2 + " the string" + animeNames[0]);
 
                 }
                 else if (functionNumber == 9)
@@ -207,6 +216,7 @@ namespace SharableSpreadSheet
                     Random random = new Random();
                     int row1 = random.Next(0, variable+1);
                     this.sharableSpreadSheet.addRow( row1);
+                    Console.WriteLine("user number :" + userId + "add " + row1 + " rows to the sheet");
 
                 }
                 else if (functionNumber == 10)
@@ -216,6 +226,7 @@ namespace SharableSpreadSheet
                     Random random = new Random();
                     int col1 = random.Next(0, variable);
                     this.sharableSpreadSheet.addCol( col1);
+                    Console.WriteLine("user number :" + userId + "add" + col1 + " colm to the sheet");
                 }
 
                 else if (functionNumber == 11)
