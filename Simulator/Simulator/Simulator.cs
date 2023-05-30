@@ -179,7 +179,7 @@ namespace Simulator
                     
                     Random random1 = new Random();
                     int row1 = random.Next(0, this.sharableSpreadSheet.getRow());
-                    int row2 = random.Next(row1, this.sharableSpreadSheet.getCol());
+                    int row2 = random.Next(row1, this.sharableSpreadSheet.getRow());
                     Shuffle(animeNames);
                     
                     Console.WriteLine("Search in range " +userId );
