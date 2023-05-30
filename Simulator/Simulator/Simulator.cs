@@ -90,7 +90,7 @@ namespace Simulator
 
                     //need to cheak whta if the size is get bigger or smaller
                     
-                    Console.WriteLine("Get cell " + Thread.CurrentThread.ManagedThreadId );
+                    Console.WriteLine("Get cell " + userId );
                     Random random = new Random();
                     int colm = random.Next(0, this.sharableSpreadSheet.getCol());
 
@@ -108,7 +108,7 @@ namespace Simulator
 
                     int rows = random.Next(0, this.sharableSpreadSheet.getRow() );
                     Shuffle(animeNames);
-                    Console.WriteLine("Set cell " + Thread.CurrentThread.ManagedThreadId );
+                    Console.WriteLine("Set cell " +userId );
 
                     this.sharableSpreadSheet.setCell(rows, colm, animeNames[0]);
                     Console.WriteLine("user number: " + userId + " set cell row: " + rows + " set colm: " + colm + " to a string :" + animeNames[0]);
@@ -117,7 +117,7 @@ namespace Simulator
                 {
                     Shuffle(animeNames);
                     
-                    Console.WriteLine("Search String " + Thread.CurrentThread.ManagedThreadId );
+                    Console.WriteLine("Search String " +userId );
 
                     this.sharableSpreadSheet.searchString(animeNames[0]);
                     Console.WriteLine("user number: " + userId + " search a  string : " + animeNames[0]);
@@ -126,10 +126,10 @@ namespace Simulator
                 {
                     Random random = new Random();
                     int row1 = random.Next(0, this.sharableSpreadSheet.getRow());
-
+                    
                     int row2 = random.Next(0, this.sharableSpreadSheet.getRow() );
                     
-                    Console.WriteLine("Exchange Rows " + Thread.CurrentThread.ManagedThreadId );
+                    Console.WriteLine("Exchange Rows " +userId );
 
                     this.sharableSpreadSheet.exchangeRows(row1,row2);
                     Console.WriteLine("user number: " + userId + " exchange rows : "+ row1+" , "+row2);
@@ -144,7 +144,7 @@ namespace Simulator
 
                     int colm2 = random.Next(0, this.sharableSpreadSheet.getCol());
                     
-                    Console.WriteLine("Exchange cols " + Thread.CurrentThread.ManagedThreadId );
+                    Console.WriteLine("Exchange cols " +userId );
 
                     this.sharableSpreadSheet.exchangeCols( colm1,  colm2);
                     Console.WriteLine("user number: " + userId + " exchange colm : " + colm1 + " , " + colm2);
@@ -155,7 +155,7 @@ namespace Simulator
                     Random random = new Random();
                     int row1 = random.Next(0, this.sharableSpreadSheet.getRow());
                     Shuffle(animeNames);
-                    Console.WriteLine("Search in row " + Thread.CurrentThread.ManagedThreadId );
+                    Console.WriteLine("Search in row " + userId );
 
                     this.sharableSpreadSheet.searchInRow( row1, animeNames[0]);
                     Console.WriteLine("user number: " + userId + " search in row : " + row1 + " the string " + animeNames[0]);
@@ -166,7 +166,7 @@ namespace Simulator
                     Random random = new Random();
                     int col1 = random.Next(0, this.sharableSpreadSheet.getCol());
                     Shuffle(animeNames);
-                    Console.WriteLine("search in col " + Thread.CurrentThread.ManagedThreadId );
+                    Console.WriteLine("search in col " + userId );
                     this.sharableSpreadSheet.searchInCol( col1, animeNames[0]);
                     Console.WriteLine("user number: " + userId + " search in colm : " + col1 + " the string" + animeNames[0]);
 
@@ -182,7 +182,7 @@ namespace Simulator
                     int row2 = random.Next(row1, this.sharableSpreadSheet.getCol());
                     Shuffle(animeNames);
                     
-                    Console.WriteLine("Search in range " + Thread.CurrentThread.ManagedThreadId );
+                    Console.WriteLine("Search in range " +userId );
 
                     this.sharableSpreadSheet.searchInRange( col1,  col2,  row1,  row2, animeNames[0]);
                     Console.WriteLine("user number: " + userId + " search in range colm : " + col1+" ,"+ col2 + "search in range rows: "+row1+", "+row2 + " the string " + animeNames[0]);
@@ -192,7 +192,7 @@ namespace Simulator
                 {
                     Random random = new Random();
                     int row1 = random.Next(0, this.sharableSpreadSheet.getRow());
-                    Console.WriteLine("Add row " + Thread.CurrentThread.ManagedThreadId );
+                    Console.WriteLine("Add row " + userId );
                     this.sharableSpreadSheet.addRow( row1);
                     Console.WriteLine("user number : " + userId + "add " + row1 + " rows to the sheet");
 
@@ -201,7 +201,7 @@ namespace Simulator
                 {
                     Random random = new Random();
                     int col1 = random.Next(0, this.sharableSpreadSheet.getCol());
-                    Console.WriteLine("add col " + Thread.CurrentThread.ManagedThreadId );
+                    Console.WriteLine("add col " + userId );
                     this.sharableSpreadSheet.addCol( col1);
                     Console.WriteLine("user number : " + userId + "add " + col1 + " colm to the sheet");
                 }
@@ -209,7 +209,7 @@ namespace Simulator
                 else if (functionNumber == 11)
                 {
                     Shuffle(animeNames);
-                    Console.WriteLine("Find all " + Thread.CurrentThread.ManagedThreadId );
+                    Console.WriteLine("Find all " + userId );
 
                     Console.WriteLine("user number : " + userId + "get all the positions of the string " + animeNames[0]+ " : "+ this.sharableSpreadSheet.FindAll(animeNames[0], false));
 
@@ -221,7 +221,7 @@ namespace Simulator
                     Shuffle(animeNames);
                     
                     String str2 = animeNames[0];
-                    Console.WriteLine("Set all " + Thread.CurrentThread.ManagedThreadId );
+                    Console.WriteLine("Set all " + userId );
 
                     this.sharableSpreadSheet.SetAll(str1, str2, false);
                     Console.WriteLine("user number : " + userId + " set all "+str1+" to " +str2);
@@ -230,7 +230,7 @@ namespace Simulator
                 }
                 else if (functionNumber == 13)
                 {
-                    Console.WriteLine("Get size " + Thread.CurrentThread.ManagedThreadId );
+                    Console.WriteLine("Get size " +userId );
 
                     Console.WriteLine("user number :" + userId +" get the size of the sheet : " +this.sharableSpreadSheet.GetSize());
 
