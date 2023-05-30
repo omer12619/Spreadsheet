@@ -5,3 +5,10 @@ C:\Users\laufe\OneDrive\Documents\GitHub\Spreadsheet\Simulator\Simulator\obj\Deb
 C:\Users\laufe\OneDrive\Documents\GitHub\Spreadsheet\Simulator\Simulator\obj\Debug\Simulator.csproj.CoreCompileInputs.cache
 C:\Users\laufe\OneDrive\Documents\GitHub\Spreadsheet\Simulator\Simulator\obj\Debug\Simulator.exe
 C:\Users\laufe\OneDrive\Documents\GitHub\Spreadsheet\Simulator\Simulator\obj\Debug\Simulator.pdb
+C:\Users\marik\Documents\GitHub\Spreadsheet\Simulator\Simulator\bin\Debug\Simulator.exe
+C:\Users\marik\Documents\GitHub\Spreadsheet\Simulator\Simulator\bin\Debug\Simulator.pdb
+C:\Users\marik\Documents\GitHub\Spreadsheet\Simulator\Simulator\obj\Debug\Simulator.csproj.AssemblyReference.cache
+C:\Users\marik\Documents\GitHub\Spreadsheet\Simulator\Simulator\obj\Debug\Simulator.csproj.SuggestedBindingRedirects.cache
+C:\Users\marik\Documents\GitHub\Spreadsheet\Simulator\Simulator\obj\Debug\Simulator.csproj.CoreCompileInputs.cache
+C:\Users\marik\Documents\GitHub\Spreadsheet\Simulator\Simulator\obj\Debug\Simulator.exe
+C:\Users\marik\Documents\GitHub\Spreadsheet\Simulator\Simulator\obj\Debug\Simulator.pdb

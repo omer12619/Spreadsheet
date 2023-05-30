@@ -31,7 +31,7 @@ namespace Simulator
             {
                 m_rowMutex[i] = new Mutex();
             }
-            m_users = new Semaphore(0,nUsers);//TODO maybe it should start from zero?
+            m_users = new Semaphore(nUsers,nUsers);//TODO maybe it should start from zero?
 
         }
         public string getCell(int row, int col)
@@ -419,11 +419,6 @@ namespace Simulator
                 m_rowMutex[i].WaitOne();
             }
             
-            //string filePath = "C:/Users/" + Environment.UserName + "/Desktop/" + fileName;
-            //string currentDirectory = AppDomain.CurrentDomain.BaseDirectory;;
-
-            //string filePath = Path.Combine(currentDirectory, fileName);
-            
             string currentDirectory = Directory.GetCurrentDirectory();
             DirectoryInfo parentDirectory = Directory.GetParent(currentDirectory)?.Parent;
             string filePath = parentDirectory.FullName + "\\" + fileName;
@@ -462,23 +457,8 @@ namespace Simulator
                         m_spreadSheet[i, j] = values[j];
                     }
                 }
-                    /*while ((line = fileReader.ReadLine()) != null)
-                    {
-                        // Split the line into values
-                        string[] values = line.Split(' ');
 
-                        // Iterate over the values and parse them
-                        for (int columnIndex = 0; columnIndex < values.Length; columnIndex++)
-                        {
-                            // Parse the value and assign it to the spreadsheet
-
-                            m_spreadSheet[rowIndex, columnIndex] = values[columnIndex];
-                        }
-
-                        rowIndex++;
-                    }*/ 
-                    
-                    Console.WriteLine("Spreadsheet loaded successfully.");
+                Console.WriteLine("Spreadsheet loaded successfully.");
             }
             else
             {
@@ -493,6 +473,16 @@ namespace Simulator
             {
                 m_colMutex[i].ReleaseMutex();
             }
+        }
+
+        public int getCol()
+        {
+            return m_spreadSheet.GetLength(1);
+        }
+
+        public int getRow()
+        {
+            return m_spreadSheet.GetLength(0);
         }
     }
 }

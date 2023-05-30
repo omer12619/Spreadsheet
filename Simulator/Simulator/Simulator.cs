@@ -79,7 +79,7 @@ namespace Simulator
         {
 
             Shuffle(func_id);
-            for (int i = 0; i < nOperations; i++)
+            for (int i = 1; i < nOperations; i++)
             {
                 int functionNumber = i; // The function number to check
 
@@ -94,6 +94,7 @@ namespace Simulator
                     int colm = random.Next(0, variable + 1);
 
                     int rows = random.Next(0, this.rows + 1);
+                    
                     Console.WriteLine("user number:"+userId+"fuction get cell in row:" + rows + "colm:" + colm + " :" + this.sharableSpreadSheet.getCell(rows, colm));
                 }
                 else if (functionNumber == 2)
