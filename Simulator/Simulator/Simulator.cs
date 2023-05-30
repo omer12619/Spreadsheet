@@ -33,7 +33,7 @@ namespace Simulator
             //add the idss of the functions
 
             this.func_id = new List<int>();
-            for (int i = 1; i < 15; i++)
+            for (int i = 1; i < 14; i++)
             {
                 this.func_id.Add(i);
             }
@@ -225,14 +225,7 @@ namespace Simulator
                     Console.WriteLine("user number :" + userId +" get the size of the sheet :" +this.sharableSpreadSheet.GetSize());
 
                 }
-                else if (functionNumber == 14)
-                {
-                    Shuffle(animeNames);
-
-                    this.sharableSpreadSheet.Save(animeNames[0]+".txt");
-                    Console.WriteLine("user number :" + userId + "save the sheet to a file name :" + animeNames[0]);
-
-                }
+             
             }
             Thread.Sleep(this._msSleep);
 
