@@ -237,8 +237,18 @@ namespace Simulator
             }
 
             m_spreadSheet = newSpreadSheet;
+            Mutex[] newLocks = new Mutex[m_rowMutex.Length + 1];
+            
+            for (int i = 0; i < m_rowMutex.Length; i++)
+            {
+                newLocks[i] = m_rowMutex[i];
+            }
 
-            for (int i = m_rowMutex.Length - 1; i >= 0; i--)
+            newLocks[newLocks.Length - 1] = new Mutex();
+            
+            m_rowMutex = newLocks;
+            
+            for (int i = m_rowMutex.Length - 2; i >= 0; i--)
             {
                 m_rowMutex[i].ReleaseMutex();
             }
@@ -283,12 +293,23 @@ namespace Simulator
             }
             m_spreadSheet = newSpreadSheet;
             
+            Mutex[] newLocks = new Mutex[m_colMutex.Length + 1];
+            
+            for (int i = 0; i < m_colMutex.Length; i++)
+            {
+                newLocks[i] = m_colMutex[i];
+            }
+            
+            newLocks[newLocks.Length - 1] = new Mutex();
+
+            m_rowMutex = newLocks;
+
             for (int i = m_rowMutex.Length - 1; i >= 0; i--)
             {
                 m_rowMutex[i].ReleaseMutex();
             }
             
-            for (int i = m_colMutex.Length - 1; i >= 0; i--)
+            for (int i = m_colMutex.Length - 2; i >= 0; i--)
             {
                 m_colMutex[i].ReleaseMutex();
             }
@@ -409,15 +430,15 @@ namespace Simulator
         }
         public void load(string fileName)
         {
-            for (int i = 0; i < m_colMutex.Length; i++)
-            {
-                m_colMutex[i].WaitOne();
-            }
-            
-            for (int i = 0; i < m_rowMutex.Length; i++)
-            {
-                m_rowMutex[i].WaitOne();
-            }
+            // for (int i = 0; i < m_colMutex.Length; i++)
+            // {
+            //     m_colMutex[i].WaitOne();
+            // }
+            //
+            // for (int i = 0; i < m_rowMutex.Length; i++)
+            // {
+            //     m_rowMutex[i].WaitOne();
+            // }
             
             string currentDirectory = Directory.GetCurrentDirectory();
             DirectoryInfo parentDirectory = Directory.GetParent(currentDirectory)?.Parent;
@@ -460,19 +481,34 @@ namespace Simulator
 
                 Console.WriteLine("Spreadsheet loaded successfully.");
             }
+            
             else
             {
                 Console.WriteLine("File not found: " + fileName);
             }
-            for (int i = m_rowMutex.Length - 1; i >= 0; i--)
+
+            Mutex[] newRowLocks = new Mutex[m_spreadSheet.GetLength(0)];
+            Mutex[] newColLocks = new Mutex[m_spreadSheet.GetLength(1)];
+
+            for (int i = 0; i < newRowLocks.Length; i++)
             {
-                m_rowMutex[i].ReleaseMutex();
+                newRowLocks[i] = new Mutex();
             }
             
-            for (int i = m_colMutex.Length - 1; i >= 0; i--)
+            for (int i = 0; i < newColLocks.Length; i++)
             {
-                m_colMutex[i].ReleaseMutex();
+                newColLocks[i] = new Mutex();
             }
+
+            // for (int i = m_rowMutex.Length - 1; i >= 0; i--)
+            // {
+            //     m_rowMutex[i].ReleaseMutex();
+            // }
+            //
+            // for (int i = m_colMutex.Length - 1; i >= 0; i--)
+            // {
+            //     m_colMutex[i].ReleaseMutex();
+            // }
         }
 
         public int getCol()
