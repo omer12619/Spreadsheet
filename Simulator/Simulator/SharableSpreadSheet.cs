@@ -477,12 +477,19 @@ namespace Simulator
 
         public int getCol()
         {
-            return m_spreadSheet.GetLength(1);
+            m_users.WaitOne();
+            int res =  m_spreadSheet.GetLength(1);
+            m_users.Release();
+
+            return res;
         }
 
         public int getRow()
         {
-            return m_spreadSheet.GetLength(0);
+            m_users.WaitOne();
+            int res =  m_spreadSheet.GetLength(0);
+            m_users.Release();
+            return res;
         }
     }
 }
