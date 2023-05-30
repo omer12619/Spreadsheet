@@ -81,7 +81,7 @@ namespace Simulator
             Shuffle(func_id);
             for (int i = 1; i < nOperations; i++)
             {
-                int functionNumber = i; // The function number to check
+                int functionNumber = func_id[i]; // The function number to check
 
                 if (functionNumber == 1)
                 {
