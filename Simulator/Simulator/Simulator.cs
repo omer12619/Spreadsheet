@@ -100,18 +100,18 @@ namespace Simulator
                 else if (functionNumber == 2)
                 {
 
-                    int variable = this.columns;
+                    int variable = this.sharableSpreadSheet.getCol();
 
                     Random random = new Random();
                     int colm = random.Next(0, variable + 1);
 
-                    int rows = random.Next(0, this.rows + 1);
+                    int rows = random.Next(0, this.sharableSpreadSheet.getRow() + 1);
                     Shuffle(animeNames);
 
 
 
                     this.sharableSpreadSheet.setCell(rows, colm, animeNames[0]);
-                    Console.WriteLine("user number:" + userId + "set cell row:" + rows + " set colm:" + colm + " to a string :" + animeNames[0]);
+                    Console.WriteLine("user number:" + userId + "set cell row:" + rows + " set colm: " + colm + " to a string :" + animeNames[0]);
                 }
                 else if (functionNumber == 3)
                 {
@@ -123,12 +123,12 @@ namespace Simulator
                 {
 
 
-                    int variable = this.rows;
+                    
 
                     Random random = new Random();
-                    int row1 = random.Next(0, variable + 1);
+                    int row1 = random.Next(0, this.sharableSpreadSheet.getRow()+1);
 
-                    int row2 = random.Next(0, variable + 1);
+                    int row2 = random.Next(0, this.sharableSpreadSheet.getRow() + 1);
 
                     this.sharableSpreadSheet.exchangeRows(row1,row2);
                     Console.WriteLine("user number:" + userId + "exchange rows : "+ row1+","+row2);
@@ -139,9 +139,9 @@ namespace Simulator
                     int variable = this.columns;
 
                     Random random = new Random();
-                    int colm1 = random.Next(0, variable + 1);
+                    int colm1 = random.Next(0, this.sharableSpreadSheet.getCol()+1);
 
-                    int colm2 = random.Next(0, variable + 1);
+                    int colm2 = random.Next(0, this.sharableSpreadSheet.getCol()+1);
                     this.sharableSpreadSheet.exchangeCols( colm1,  colm2);
                     Console.WriteLine("user number:" + userId + "exchange colm : " + colm1 + "," + colm2);
 
@@ -150,10 +150,10 @@ namespace Simulator
                 {
 
 
-                    int variable = this.rows;
+                  
 
                     Random random = new Random();
-                    int row1 = random.Next(0, variable + 1);
+                    int row1 = random.Next(0, this.sharableSpreadSheet.getRow() + 1);
                     Shuffle(animeNames);
                     this.sharableSpreadSheet.searchInRow( row1, animeNames[0]);
                     Console.WriteLine("user number:" + userId + "serch in row : " + row1 + " the string" + animeNames[0]);
@@ -162,9 +162,9 @@ namespace Simulator
                 else if (functionNumber == 7)
                 {
 
-                    int variable = this.columns;
+                    
                     Random random = new Random();
-                    int col1 = random.Next(0, variable + 1);
+                    int col1 = random.Next(0, this.sharableSpreadSheet.getCol() + 1);
                     Shuffle(animeNames);
                     this.sharableSpreadSheet.searchInCol( col1, animeNames[0]);
                     Console.WriteLine("user number:" + userId + " serch in colm : " + col1 + " the string" + animeNames[0]);
@@ -172,14 +172,13 @@ namespace Simulator
                 }
                 else if (functionNumber == 8)
                 {
-                    int variable = this.columns;
                     Random random = new Random();
-                    int col1 = random.Next(0, variable );
-                    int col2 = random.Next(col1, variable + 1);
-                    int variable1 = this.rows;
+                    int col1 = random.Next(0, this.sharableSpreadSheet.getCol()) ;
+                    int col2 = random.Next(col1, this.sharableSpreadSheet.getCol() + 1);
+                    
                     Random random1 = new Random();
-                    int row1 = random.Next(0, variable );
-                    int row2 = random.Next(row1, variable + 1);
+                    int row1 = random.Next(0, this.sharableSpreadSheet.getRow());
+                    int row2 = random.Next(row1, this.sharableSpreadSheet.getCol() + 1);
                     Shuffle(animeNames);
                     this.sharableSpreadSheet.searchInRange( col1,  col2,  row1,  row2, animeNames[0]);
                     Console.WriteLine("user number:" + userId + " serach in rangee colm : " + col1+" ,"+ col2 + "serach in rangee rows:"+row1+", "+row2 + " the string" + animeNames[0]);
@@ -187,9 +186,9 @@ namespace Simulator
                 }
                 else if (functionNumber == 9)
                 {
-                    int variable = this.rows;
+                   
                     Random random = new Random();
-                    int row1 = random.Next(0, variable+1);
+                    int row1 = random.Next(0, this.sharableSpreadSheet.getRow()+1);
                     this.sharableSpreadSheet.addRow( row1);
                     Console.WriteLine("user number :" + userId + "add " + row1 + " rows to the sheet");
 
@@ -197,9 +196,9 @@ namespace Simulator
                 else if (functionNumber == 10)
                 {
 
-                    int variable = this.columns;
+                    
                     Random random = new Random();
-                    int col1 = random.Next(0, variable);
+                    int col1 = random.Next(0, this.sharableSpreadSheet.getCol() + 1);
                     this.sharableSpreadSheet.addCol( col1);
                     Console.WriteLine("user number :" + userId + "add" + col1 + " colm to the sheet");
                 }
