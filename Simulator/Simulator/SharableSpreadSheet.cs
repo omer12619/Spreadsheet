@@ -302,7 +302,7 @@ namespace Simulator
             
             newLocks[newLocks.Length - 1] = new Mutex();
 
-            m_rowMutex = newLocks;
+            m_colMutex = newLocks;
 
             for (int i = m_rowMutex.Length - 1; i >= 0; i--)
             {
