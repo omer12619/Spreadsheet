@@ -500,6 +500,8 @@ namespace Simulator
                 newColLocks[i] = new Mutex();
             }
 
+            m_colMutex = newColLocks;
+            m_rowMutex = newRowLocks;
             // for (int i = m_rowMutex.Length - 1; i >= 0; i--)
             // {
             //     m_rowMutex[i].ReleaseMutex();
