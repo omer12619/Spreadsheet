@@ -13,6 +13,8 @@ namespace Simulator
         private Mutex[] m_colMutex;
         private Mutex[] m_rowMutex;
         private Semaphore m_users;
+
+        private ReaderWriterLockSlim[] m_readerWriterRows;// TODO replace the mutex arrays with this one 
         
 
         public SharableSpreadSheet(int nRows, int nCols, int nUsers = -1)
