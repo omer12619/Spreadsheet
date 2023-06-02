@@ -68,8 +68,9 @@ namespace Simulator
 
             for (int i = 0; i < usres; i++)
             {
+                int userId = i;
 
-                threads[i] = new Thread(new ThreadStart(() => UserRunnable(i, nOperations, sharableSpreadSheet, msSleep)));
+                threads[i] = new Thread(new ThreadStart(() => UserRunnable(userId, nOperations, sharableSpreadSheet, msSleep)));
                 threads[i].Start();
             }
            
@@ -86,7 +87,8 @@ namespace Simulator
                 int functionNumber = random.Next(0, func_id.Count); // Randomly choose an index from the func_id list
 
                 // Get the function number from the func_id list using the generated index
-                int actualFunctionNumber = func_id[functionNumber]; // The function number to check
+                int actualFunctionNumber = func_id[functionNumber];
+                functionNumber = actualFunctionNumber;// The function number to check
 
                 if (functionNumber == 1)
                 {
