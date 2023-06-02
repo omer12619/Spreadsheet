@@ -12,6 +12,7 @@ namespace Simulator
             int nOperations = Int32.Parse(args[3]);
             int msSleep = Int32.Parse(args[4]);
             Simulator sim = new Simulator(rows, cols, nThreads, nOperations, msSleep);
+            
         }
     }
 }

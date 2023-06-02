@@ -17,26 +17,22 @@ namespace Simulator
         private int nOperations;
         private int _msSleep;
         private Thread[] threads;
-        private List<int> func_id;
         private List<String> animeNames;
+
 
         public Simulator(int rows, int columns, int usres, int nOperations, int msSleep)
         {
             this.rows = rows;
             this.columns = columns;
             sharableSpreadSheet = new SharableSpreadSheet(rows, columns, usres);
-            sharableSpreadSheet.load("TextFile1.txt");
+            
             this.usres = usres;
             this.nOperations = nOperations;
             this._msSleep = msSleep;
             threads = new Thread[usres];
             //add the idss of the functions
 
-            this.func_id = new List<int>();
-            for (int i = 0; i < 13; i++)
-            {
-                this.func_id.Add(i);
-            }
+           
 
 
             //string array to random the fuction argument
@@ -66,6 +62,18 @@ namespace Simulator
             };
             this.animeNames = animeNames.ToList();
 
+
+
+
+            Random rand = new Random(animeNames.Length);
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < columns; j++)
+                {
+                    sharableSpreadSheet.setCell(i, j, animeNames[rand.Next(0, animeNames.Length)]);
+                }
+            }
+
             for (int i = 0; i < usres; i++)
             {
                 int userId = i;
@@ -73,7 +81,8 @@ namespace Simulator
                 threads[i] = new Thread(new ThreadStart(() => UserRunnable(userId, nOperations, sharableSpreadSheet, msSleep)));
                 threads[i].Start();
             }
-           
+
+
 
         }
 
@@ -84,11 +93,11 @@ namespace Simulator
             for (int i = 0; i < nOperations; i++)
             {
                 Random random = new Random();
-                int functionNumber = random.Next(0, func_id.Count); // Randomly choose an index from the func_id list
+                int functionNumber = random.Next(1, 13); // Randomly choose an index from the func_id list
 
                 // Get the function number from the func_id list using the generated index
-                int actualFunctionNumber = func_id[functionNumber];
-                functionNumber = actualFunctionNumber;// The function number to check
+                
+               // The function number to check
 
                 if (functionNumber == 1)
                 {
@@ -132,9 +141,9 @@ namespace Simulator
                 else if (functionNumber == 4)
                 {
                     
-                    int row1 = random.Next(0, this.sharableSpreadSheet.getRow());
+                    int row1 = random.Next(0, this.sharableSpreadSheet.getRow()-1);
                     
-                    int row2 = random.Next(0, this.sharableSpreadSheet.getRow() );
+                    int row2 = random.Next(row1+1, this.sharableSpreadSheet.getRow() );
                     
                    
 
@@ -147,9 +156,9 @@ namespace Simulator
                     int variable = this.columns;
 
                   
-                    int colm1 = random.Next(0, this.sharableSpreadSheet.getCol());
+                    int colm1 = random.Next(0, this.sharableSpreadSheet.getCol()-1);
 
-                    int colm2 = random.Next(0, this.sharableSpreadSheet.getCol());
+                    int colm2 = random.Next(colm1+1, this.sharableSpreadSheet.getCol());
                     
                     
 
@@ -248,7 +257,12 @@ namespace Simulator
                 Thread.Sleep(this._msSleep);
 
             }
-            
+
+            for (int i = 0; i < usres; i++)
+            {
+                threads[i].Join(); // Wait for each user thread to complete
+            }
+
 
 
         }
