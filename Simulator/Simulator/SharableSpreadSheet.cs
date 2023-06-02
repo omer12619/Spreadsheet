@@ -23,6 +23,7 @@ namespace Simulator
             // construct a nRows*nCols spreadsheet
             m_spreadSheet = new string[nRows, nCols];
             m_colMutex = new Mutex[nCols];
+            m_readerWriterRows = new ReaderWriterLockSlim[nRows];
             for (int i = 0; i < nCols; i++)
             {
                 m_colMutex[i] = new Mutex();
@@ -34,7 +35,7 @@ namespace Simulator
                 m_rowMutex[i] = new Mutex();
             }
             m_users = new Semaphore(nUsers,nUsers);//TODO maybe it should start from zero?
-
+            
             for (int i = 0; i < nRows; i++)
             {
                 m_readerWriterRows[i] = new ReaderWriterLockSlim();
