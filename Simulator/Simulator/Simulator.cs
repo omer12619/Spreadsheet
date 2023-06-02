@@ -174,12 +174,12 @@ namespace Simulator
                 else if (functionNumber == 8)
                 {
                     Random random = new Random();
-                    int col1 = random.Next(0, this.sharableSpreadSheet.getCol()) ;
-                    int col2 = random.Next(col1, this.sharableSpreadSheet.getCol());
+                    int col1 = random.Next(0, this.sharableSpreadSheet.getCol()-1) ;
+                    int col2 = random.Next(col1+1, this.sharableSpreadSheet.getCol());
                     
                     Random random1 = new Random();
-                    int row1 = random.Next(0, this.sharableSpreadSheet.getRow());
-                    int row2 = random.Next(row1, this.sharableSpreadSheet.getRow());
+                    int row1 = random.Next(0, this.sharableSpreadSheet.getRow()-1);
+                    int row2 = random.Next(row1+1, this.sharableSpreadSheet.getRow());
                     Shuffle(animeNames);
                     
                     Console.WriteLine("Search in range " +userId );
