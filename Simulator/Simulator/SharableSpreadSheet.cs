@@ -24,7 +24,7 @@ namespace Simulator
             m_spreadSheet = new string[nRows, nCols];
             m_colMutex = new Mutex[nCols];
             m_readerWriterRows = new ReaderWriterLockSlim[nRows];
-            for (int i = 0; i < nCols; i++)
+            /*for (int i = 0; i < nCols; i++)
             {
                 m_colMutex[i] = new Mutex();
             }
@@ -34,11 +34,11 @@ namespace Simulator
             {
                 m_rowMutex[i] = new Mutex();
             }
-            m_users = new Semaphore(nUsers,nUsers);//TODO maybe it should start from zero?
+            m_users = new Semaphore(nUsers,nUsers);//TODO maybe it should start from zero?*/
             
             for (int i = 0; i < nRows; i++)
             {
-                m_readerWriterRows[i] = new ReaderWriterLockSlim();
+                m_readerWriterRows[i] = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
             }
 
         }
@@ -49,7 +49,7 @@ namespace Simulator
             m_users.Release();*/
             // return the string at [row,col]
 
-            try
+            /*try
             {
                 m_readerWriterRows[row].EnterReadLock();
                 string value = m_spreadSheet[row, col];
@@ -59,7 +59,12 @@ namespace Simulator
             finally
             {
                 m_readerWriterRows[row].ExitReadLock();
-            }
+            }*/
+            
+            m_readerWriterRows[row].EnterReadLock();
+            string value = m_spreadSheet[row, col];
+            m_readerWriterRows[row].ExitReadLock();
+            return value;
             
         }
         public void setCell(int row, int col, string str)
@@ -72,7 +77,7 @@ namespace Simulator
             /*m_colMutex[col].WaitOne();
             m_rowMutex[row].WaitOne();*/
             // set the string at [row,col]
-            m_readerWriterRows[row].EnterWriteLock();
+            /*m_readerWriterRows[row].EnterWriteLock();
             try
             {
                 m_spreadSheet[row, col] = str;
@@ -82,9 +87,14 @@ namespace Simulator
             {
                 m_readerWriterRows[row].ExitWriteLock();
 
-            }
+            }*/
             /*m_rowMutex[row].ReleaseMutex();
             m_colMutex[col].ReleaseMutex();*/
+            
+            m_readerWriterRows[row].EnterWriteLock();
+            m_spreadSheet[row, col] = str;
+            m_readerWriterRows[row].ExitWriteLock();
+
 
         }
         public Tuple<int, int> searchString(string str)
@@ -98,31 +108,30 @@ namespace Simulator
             {
                 m_readerWriterRows[i].EnterReadLock();
             }
-
-            try
+            
+            int row, col;
+            for (int i = 0; i < m_spreadSheet.GetLength(0); i++)
             {
-                int row, col;
-                for (int i = 0; i < m_spreadSheet.GetLength(0); i++)
+                for (int j = 0; j < m_spreadSheet.GetLength(1); j++)
                 {
-                    for (int j = 0; j < m_spreadSheet.GetLength(1); j++)
+                    if (m_spreadSheet[i, j] == str)
                     {
-                        if (m_spreadSheet[i, j] == str)
-                        {
-                            Tuple<int, int> res = new Tuple<int, int>(i, j);
+                        Tuple<int, int> res = new Tuple<int, int>(i, j);
                             /*
                             m_users.Release();
                             */
-                            return res;
+                        for (int t = m_readerWriterRows.Length - 1; t >= 0; t--)
+                        {
+                            m_readerWriterRows[t].ExitReadLock();
                         }
+                        return res;
                     }
                 }
             }
-            finally
+
+            for (int t = m_readerWriterRows.Length - 1; t >= 0; t--)
             {
-                for (int t = m_readerWriterRows.Length - 1; t >= 0; t--)
-                {
-                    m_readerWriterRows[t].ExitReadLock();
-                }
+                m_readerWriterRows[t].ExitReadLock();
             }
 
             /*
@@ -132,22 +141,26 @@ namespace Simulator
         }
         public void exchangeRows(int row1, int row2)
         {
-            if (!m_readerWriterRows[row1].IsWriteLockHeld)
-            {
-                m_readerWriterRows[row1].EnterWriteLock();
-            }
-
-            if (!m_readerWriterRows[row2].IsWriteLockHeld)
-            {
-                m_readerWriterRows[row2].EnterWriteLock();
-            }
+            // if (!m_readerWriterRows[row1].IsWriteLockHeld)
+            // {
+            //     m_readerWriterRows[row1].EnterWriteLock();
+            // }
+            //
+            // if (!m_readerWriterRows[row2].IsWriteLockHeld)
+            // {
+            //     m_readerWriterRows[row2].EnterWriteLock();
+            // }
 
             /*
             m_rowMutex[row1].WaitOne();
             m_rowMutex[row2].WaitOne();
             */
-            try
-            {
+            
+            m_readerWriterRows[row1].EnterWriteLock();
+            m_readerWriterRows[row2].EnterWriteLock();
+            
+            //try
+            //{
                 string[] rowA = new string[m_spreadSheet.GetLength(1)];
                 string[] rowB = new string[m_spreadSheet.GetLength(1)];
 
@@ -164,12 +177,12 @@ namespace Simulator
                     m_spreadSheet[row1, i] = b;
                     m_spreadSheet[row2, i] = a;
                 }
-            }
-            finally
-            {
+            //}
+            //finally
+            //{
                 m_readerWriterRows[row2].ExitWriteLock();
                 m_readerWriterRows[row1].ExitWriteLock();
-            }
+            //}
             
             /*m_rowMutex[row2].ReleaseMutex();
             m_rowMutex[row1].ReleaseMutex();*/
@@ -186,8 +199,8 @@ namespace Simulator
                 m_readerWriterRows[i].EnterWriteLock();
             }
 
-            try
-            {
+            //try
+            //{
                 string[] colA = new string[m_spreadSheet.GetLength(0)];
                 string[] colB = new string[m_spreadSheet.GetLength(0)];
 
@@ -204,18 +217,18 @@ namespace Simulator
                     m_spreadSheet[i, col1] = b;
                     m_spreadSheet[i, col1] = a;
                 }
-            }
+            //}
             
-            finally
-            {
+            //finally
+            //{
                 for (int i = m_readerWriterRows.Length - 1; i >= 0; i--)
                 {
-                    if (m_readerWriterRows[i].IsReadLockHeld == true)
-                    {
-                        m_readerWriterRows[i].ExitReadLock();
-                    }
+                    //if (m_readerWriterRows[i].IsReadLockHeld == true)
+                    //{
+                        m_readerWriterRows[i].ExitWriteLock();
+                    //}
                 }
-            }
+            //}
             // exchange the content of col1 and col2
             // m_rowMutex[col2].ReleaseMutex();
             // m_rowMutex[col1].ReleaseMutex();
@@ -231,8 +244,8 @@ namespace Simulator
             */
             
             m_readerWriterRows[row].EnterReadLock();
-            try
-            {
+            //try
+            //{
                 int col;
                 string[] searchRow = new string[m_spreadSheet.GetLength(1)];
                 for (int i = 0; i < m_spreadSheet.GetLength(1); i++)
@@ -248,14 +261,15 @@ namespace Simulator
                         /*
                         m_users.Release();
                         */
+                        m_readerWriterRows[row].ExitReadLock();
                         return res;
                     }
                 }
-            }
-            finally
-            {
+            //}
+            //finally
+            //{
                 m_readerWriterRows[row].ExitReadLock();     
-            }
+            //}
             
             // perform search in specific row
             /*
@@ -276,8 +290,8 @@ namespace Simulator
                 m_readerWriterRows[i].EnterReadLock();
             }
 
-            try
-            {
+            //try
+            //{
                 int row;
                 string[] searchCol = new string[m_spreadSheet.GetLength(0)];
                 for (int i = 0; i < m_spreadSheet.GetLength(0); i++)
@@ -293,22 +307,26 @@ namespace Simulator
                         /*
                         m_users.Release();
                         */
-                        return i;
+                        for (int k = m_readerWriterRows.Length - 1; k >= 0; k--)
+                        {
+                            m_readerWriterRows[k].ExitReadLock();
+                        }
+                        return res;
                     }
                 }
                 // perform search in specific col
                 /*
                 m_users.Release();
             */
-            }
+            //}
             
-            finally
-            {
+            //finally
+            //{
                 for (int i = m_readerWriterRows.Length - 1; i >= 0; i--)
                 {
                     m_readerWriterRows[i].ExitReadLock();
                 }
-            }
+            //}
 
             return -1;
         }
@@ -319,13 +337,13 @@ namespace Simulator
             */
 
 
-            for(int i = 0; i < m_readerWriterRows.Length; i++)
+            for(int i = col1; i <= col2; i++)
             {
                 m_readerWriterRows[i].EnterReadLock();
             }
 
-            try
-            {
+            //try
+            //{
                 int row, col;
                 // perform search within spesific range: [row1:row2,col1:col2] 
                 //includes col1,col2,row1,row2
@@ -334,25 +352,29 @@ namespace Simulator
                 {
                     for (int j = row1; j <= row2; j++)
                     {
-                        if (m_spreadSheet[i, j].Equals(str))
+                        if (m_spreadSheet[j, i].Equals(str))
                         {
                             /*
                             m_users.Release();
                             */
                             Tuple<int, int> res = new Tuple<int, int>(i, j);
+                            for (int k = col2; k >= col1; k--)
+                            {
+                                m_readerWriterRows[k].ExitReadLock();
+                            }
                             return res;
                         }
                     }
                 }
-            }
+            //}
             
-            finally
+            //finally
+            //{
+            for (int k = col2; k >= col1; k--)
             {
-                for (int i = m_readerWriterRows.Length - 1; i >= 0; i--)
-                {
-                    m_readerWriterRows[i].ExitReadLock();
-                }
+                m_readerWriterRows[k].ExitReadLock();
             }
+            //}
 
             /*
             m_users.Release();
@@ -378,8 +400,8 @@ namespace Simulator
                 m_readerWriterRows[i].EnterWriteLock();
             }
 
-            try
-            {
+            //try
+            //{
                 int numRows = m_spreadSheet.GetLength(0);
                 int numCols = m_spreadSheet.GetLength(1);
 
@@ -414,20 +436,20 @@ namespace Simulator
                     newLocks[i] = m_readerWriterRows[i];
                 }
 
-                newLocks[newLocks.Length - 1] = new ReaderWriterLockSlim();
+                newLocks[newLocks.Length - 1] = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
                 m_readerWriterRows = newLocks;
                 /*
                 m_rowMutex = newLocks;
             */
-            }
+            //}
         
-            finally
-            {
+            //finally
+            //{
                 for (int i = m_readerWriterRows.Length - 2; i >= 0; i--)
                 {
                     m_readerWriterRows[i].ExitWriteLock();
                 }
-            }
+            //}
             
             /*for (int i = m_rowMutex.Length - 2; i >= 0; i--)
             {
@@ -458,8 +480,8 @@ namespace Simulator
                 m_readerWriterRows[i].EnterWriteLock();
             }
 
-            try
-            {
+            //try
+            //{
                 int numRows = m_spreadSheet.GetLength(0);
                 int numCols = m_spreadSheet.GetLength(1);
 
@@ -492,15 +514,15 @@ namespace Simulator
                 // newLocks[newLocks.Length - 1] = new Mutex();
                 //
                 // m_colMutex = newLocks;
-            }
+            //}
 
-            finally
-            {
+            //finally
+            //{
                 for (int i = m_readerWriterRows.Length - 1; i >= 0; i--)
                 {
                     m_readerWriterRows[i].ExitWriteLock();
                 }
-            }
+            //}
             
             // for (int i = m_rowMutex.Length - 1; i >= 0; i--)
             // {
@@ -523,8 +545,8 @@ namespace Simulator
                 m_readerWriterRows[i].EnterReadLock();
             }
 
-            try
-            {
+            //try
+            //{
                 List<Tuple<int, int>> cellList = new List<Tuple<int, int>>();
 
                 for (int i = 0; i < m_spreadSheet.GetLength(0); i++)
@@ -549,16 +571,22 @@ namespace Simulator
                         }
                     }
                 }
-                return cellList.ToArray();
-            }
-            
-            finally
-            {
+                Tuple<int, int>[] res = cellList.ToArray();
                 for (int i = m_readerWriterRows.Length - 1; i >= 0; i--)
                 {
                     m_readerWriterRows[i].ExitReadLock();
                 }
-            }
+                
+                return res;
+            //}
+            
+            //finally
+            //{
+                /*for (int i = m_readerWriterRows.Length - 1; i >= 0; i--)
+                {
+                    m_readerWriterRows[i].ExitReadLock();
+                }*/
+            //}
             
             /*
             m_users.Release();
@@ -572,8 +600,8 @@ namespace Simulator
                 m_readerWriterRows[i].EnterWriteLock();
             }
 
-            try
-            {
+            //try
+            //{
                 // replace all oldStr cells with the newStr str according to caseSensitive param
                 for (int i = 0; i < m_spreadSheet.GetLength(0); i++)
                 {
@@ -597,15 +625,15 @@ namespace Simulator
                         }
                     }
                 }
-            }
+            //}
             
-            finally
-            {
+            //finally
+            //{
                 for (int i = m_readerWriterRows.Length - 1; i >= 0; i--)
                 {
                     m_readerWriterRows[i].ExitWriteLock();
                 }
-            }
+           // }
         }
         
         public Tuple<int, int> GetSize()
@@ -619,8 +647,8 @@ namespace Simulator
                 m_readerWriterRows[i].EnterReadLock();
             }
 
-            try
-            {
+            //try
+            //{
                 int nRows = m_spreadSheet.GetLength(0);
                 int nCols = m_spreadSheet.GetLength(1);
 
@@ -630,23 +658,27 @@ namespace Simulator
                 /*
                 m_users.Release();
                 */
-            
-                return res;
-            }
-            
-            finally
-            {
+                
                 for (int i = m_readerWriterRows.Length - 1; i >= 0; i--)
                 {
                     m_readerWriterRows[i].ExitReadLock();
                 }
-            }
+                return res;
+            //}
+            
+            //finally
+            //{
+                /*for (int i = m_readerWriterRows.Length - 1; i >= 0; i--)
+                {
+                    m_readerWriterRows[i].ExitReadLock();
+                }*/
+            //}
 
         }
 
         public void Save(string fileName)
         {
-            for (int i = 0; i < m_colMutex.Length; i++)
+            /*for (int i = 0; i < m_colMutex.Length; i++)
             {
                 m_colMutex[i].WaitOne();
             }
@@ -654,10 +686,11 @@ namespace Simulator
             for (int i = 0; i < m_rowMutex.Length; i++)
             {
                 m_rowMutex[i].WaitOne();
-            }
+            }*/
             // Specify the file name
-            string filePath = "C:/Users/" + Environment.UserName + "/Desktop/" + fileName;
-
+            string currentDirectory = Directory.GetCurrentDirectory();
+            DirectoryInfo parentDirectory = Directory.GetParent(currentDirectory)?.Parent;
+            string filePath = parentDirectory.FullName + "\\" + fileName;
             // Save the spreadsheet to a file
             using (StreamWriter fileWriter = new StreamWriter(filePath))
             {
@@ -673,7 +706,7 @@ namespace Simulator
                 }
             }
             
-            for (int i = m_rowMutex.Length - 1; i >= 0; i--)
+            /*for (int i = m_rowMutex.Length - 1; i >= 0; i--)
             {
                 m_rowMutex[i].ReleaseMutex();
             }
@@ -681,7 +714,7 @@ namespace Simulator
             for (int i = m_colMutex.Length - 1; i >= 0; i--)
             {
                 m_colMutex[i].ReleaseMutex();
-            }
+            }*/
         }
         public void load(string fileName)
         {
@@ -742,7 +775,7 @@ namespace Simulator
                 Console.WriteLine("File not found: " + fileName);
             }
 
-            Mutex[] newRowLocks = new Mutex[m_spreadSheet.GetLength(0)];
+            /*Mutex[] newRowLocks = new Mutex[m_spreadSheet.GetLength(0)];
             Mutex[] newColLocks = new Mutex[m_spreadSheet.GetLength(1)];
 
             for (int i = 0; i < newRowLocks.Length; i++)
@@ -753,10 +786,10 @@ namespace Simulator
             for (int i = 0; i < newColLocks.Length; i++)
             {
                 newColLocks[i] = new Mutex();
-            }
+            }*/
 
-            m_colMutex = newColLocks;
-            m_rowMutex = newRowLocks;
+            /*m_colMutex = newColLocks;
+            m_rowMutex = newRowLocks;*/
             // for (int i = m_rowMutex.Length - 1; i >= 0; i--)
             // {
             //     m_rowMutex[i].ReleaseMutex();
@@ -770,18 +803,33 @@ namespace Simulator
 
         public int getCol()
         {
-            m_users.WaitOne();
+            // m_users.WaitOne();
+            for(int i = 0; i < m_readerWriterRows.Length; i++)
+            {
+                m_readerWriterRows[i].EnterReadLock();
+            }
             int res =  m_spreadSheet.GetLength(1);
-            m_users.Release();
-
+            // m_users.Release();
+            for (int i = m_readerWriterRows.Length - 1; i >= 0; i--)
+            {
+                m_readerWriterRows[i].ExitReadLock();
+            }
             return res;
         }
 
         public int getRow()
         {
-            m_users.WaitOne();
+            // m_users.WaitOne();
+            for(int i = 0; i < m_readerWriterRows.Length; i++)
+            {
+                m_readerWriterRows[i].EnterReadLock();
+            }
             int res =  m_spreadSheet.GetLength(0);
-            m_users.Release();
+            // m_users.Release();
+            for (int i = m_readerWriterRows.Length - 1; i >= 0; i--)
+            {
+                m_readerWriterRows[i].ExitReadLock();
+            }
             return res;
         }
     }
