@@ -337,7 +337,7 @@ namespace Simulator
             */
 
 
-            for(int i = col1; i <= col2; i++)
+            for(int i = row1; i <= row2; i++)
             {
                 m_readerWriterRows[i].EnterReadLock();
             }
@@ -358,7 +358,7 @@ namespace Simulator
                             m_users.Release();
                             */
                             Tuple<int, int> res = new Tuple<int, int>(i, j);
-                            for (int k = col2; k >= col1; k--)
+                            for (int k = row2; k >= row1; k--)
                             {
                                 m_readerWriterRows[k].ExitReadLock();
                             }
@@ -370,7 +370,7 @@ namespace Simulator
             
             //finally
             //{
-            for (int k = col2; k >= col1; k--)
+            for (int k = row2; k >= row1; k--)
             {
                 m_readerWriterRows[k].ExitReadLock();
             }
@@ -425,6 +425,11 @@ namespace Simulator
                     }
                 }
 
+                for (int i = 0; i < newSpreadSheet.GetLength(1); i++)
+                {
+                    newSpreadSheet[row1, i] = "new Row";
+                }
+                
                 m_spreadSheet = newSpreadSheet;
                 ReaderWriterLockSlim[] newLocks = new ReaderWriterLockSlim[m_readerWriterRows.Length + 1];
                 /*
@@ -500,6 +505,11 @@ namespace Simulator
                             newSpreadSheet[i, j] = m_spreadSheet[i, j - 1];
                         }
                     }
+                }
+                
+                for (int i = 0; i < newSpreadSheet.GetLength(0); i++)
+                {
+                    newSpreadSheet[i, col1] = "new Row";
                 }
 
                 m_spreadSheet = newSpreadSheet;
