@@ -398,16 +398,21 @@ namespace Simulator
                 }
 
                 m_spreadSheet = newSpreadSheet;
+                ReaderWriterLockSlim[] newLocks = new ReaderWriterLockSlim[m_readerWriterRows.Length + 1];
+                /*
                 Mutex[] newLocks = new Mutex[m_rowMutex.Length + 1];
+                */
             
                 for (int i = 0; i < m_rowMutex.Length; i++)
                 {
-                    newLocks[i] = m_rowMutex[i];
+                    newLocks[i] = m_readerWriterRows[i];
                 }
 
-                newLocks[newLocks.Length - 1] = new Mutex();
-            
+                newLocks[newLocks.Length - 1] = new ReaderWriterLockSlim();
+                m_readerWriterRows = newLocks;
+                /*
                 m_rowMutex = newLocks;
+            */
             }
         
             finally
