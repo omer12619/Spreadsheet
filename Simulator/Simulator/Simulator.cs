@@ -235,9 +235,10 @@ namespace Simulator
                     Console.WriteLine("user number :" + userId +" get the size of the sheet : " +this.sharableSpreadSheet.GetSize());
 
                 }
-             
+                Thread.Sleep(this._msSleep);
+
             }
-            Thread.Sleep(this._msSleep);
+            
 
 
         }
