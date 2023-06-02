@@ -203,7 +203,7 @@ namespace Simulator
             {
                 for (int i = m_readerWriterRows.Length - 1; i >= 0; i--)
                 {
-                    m_readerWriterRows[i].ExitReadLock();
+                    m_readerWriterRows[i].ExitWriteLock();
                 }
             }
             // exchange the content of col1 and col2
@@ -220,11 +220,7 @@ namespace Simulator
             m_users.WaitOne();
             */
             
-            for (int i = 0; i < m_readerWriterRows.Length; i++)
-            {
-                m_readerWriterRows[i].EnterWriteLock();
-            }
-            
+            m_readerWriterRows[row].EnterReadLock();
             try
             {
                 int col;
@@ -267,7 +263,7 @@ namespace Simulator
             
             for(int i = 0; i < m_readerWriterRows.Length; i++)
             {
-                m_readerWriterRows[i].EnterWriteLock();
+                m_readerWriterRows[i].EnterReadLock();
             }
 
             try
@@ -315,7 +311,7 @@ namespace Simulator
 
             for(int i = 0; i < m_readerWriterRows.Length; i++)
             {
-                m_readerWriterRows[i].EnterWriteLock();
+                m_readerWriterRows[i].EnterReadLock();
             }
 
             try
@@ -419,7 +415,7 @@ namespace Simulator
             {
                 for (int i = m_readerWriterRows.Length - 1; i >= 0; i--)
                 {
-                    m_readerWriterRows[i].ExitReadLock();
+                    m_readerWriterRows[i].ExitWriteLock();
                 }
             }
             
@@ -492,7 +488,7 @@ namespace Simulator
             {
                 for (int i = m_readerWriterRows.Length - 1; i >= 0; i--)
                 {
-                    m_readerWriterRows[i].ExitReadLock();
+                    m_readerWriterRows[i].ExitWriteLock();
                 }
             }
             
@@ -514,7 +510,7 @@ namespace Simulator
             
             for(int i = 0; i < m_readerWriterRows.Length; i++)
             {
-                m_readerWriterRows[i].EnterWriteLock();
+                m_readerWriterRows[i].EnterReadLock();
             }
 
             try
@@ -597,7 +593,7 @@ namespace Simulator
             {
                 for (int i = m_readerWriterRows.Length - 1; i >= 0; i--)
                 {
-                    m_readerWriterRows[i].ExitReadLock();
+                    m_readerWriterRows[i].ExitWriteLock();
                 }
             }
         }
@@ -610,7 +606,7 @@ namespace Simulator
             
             for(int i = 0; i < m_readerWriterRows.Length; i++)
             {
-                m_readerWriterRows[i].EnterWriteLock();
+                m_readerWriterRows[i].EnterReadLock();
             }
 
             try
