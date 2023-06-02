@@ -413,7 +413,7 @@ namespace Simulator
         
             finally
             {
-                for (int i = m_readerWriterRows.Length - 1; i >= 0; i--)
+                for (int i = m_readerWriterRows.Length - 2; i >= 0; i--)
                 {
                     m_readerWriterRows[i].ExitWriteLock();
                 }
@@ -472,16 +472,16 @@ namespace Simulator
 
                 m_spreadSheet = newSpreadSheet;
 
-                Mutex[] newLocks = new Mutex[m_colMutex.Length + 1];
-
-                for (int i = 0; i < m_colMutex.Length; i++)
-                {
-                    newLocks[i] = m_colMutex[i];
-                }
-
-                newLocks[newLocks.Length - 1] = new Mutex();
-
-                m_colMutex = newLocks;
+                // Mutex[] newLocks = new Mutex[m_colMutex.Length + 1];
+                //
+                // for (int i = 0; i < m_colMutex.Length; i++)
+                // {
+                //     newLocks[i] = m_colMutex[i];
+                // }
+                //
+                // newLocks[newLocks.Length - 1] = new Mutex();
+                //
+                // m_colMutex = newLocks;
             }
 
             finally
