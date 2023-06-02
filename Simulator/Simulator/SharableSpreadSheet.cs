@@ -139,30 +139,26 @@ namespace Simulator
             m_rowMutex[row1].WaitOne();
             m_rowMutex[row2].WaitOne();
             */
-            try
-            {
-                string[] rowA = new string[m_spreadSheet.GetLength(1)];
-                string[] rowB = new string[m_spreadSheet.GetLength(1)];
+            
+            string[] rowA = new string[m_spreadSheet.GetLength(1)];
+            string[] rowB = new string[m_spreadSheet.GetLength(1)];
 
-                for (int i = 0; i < m_spreadSheet.GetLength(1); i++)
-                {
-                    rowA[i] = m_spreadSheet[row1, i];
-                    rowB[i] = m_spreadSheet[row2, i];
-                }
+            for (int i = 0; i < m_spreadSheet.GetLength(1); i++)
+            { 
+                rowA[i] = m_spreadSheet[row1, i]; 
+                rowB[i] = m_spreadSheet[row2, i];
+            }
 
-                for (int i = 0; i < rowA.Length; i++)
-                {
-                    string a = rowA[i];
-                    string b = rowB[i];
-                    m_spreadSheet[row1, i] = b;
-                    m_spreadSheet[row2, i] = a;
-                }
-            }
-            finally
+            for (int i = 0; i < rowA.Length; i++)
             {
-                m_readerWriterRows[row2].ExitWriteLock();
-                m_readerWriterRows[row1].ExitWriteLock();
+                string a = rowA[i];
+                string b = rowB[i];
+                m_spreadSheet[row1, i] = b;
+                m_spreadSheet[row2, i] = a;
             }
+            
+            m_readerWriterRows[row2].ExitWriteLock();
+            m_readerWriterRows[row1].ExitWriteLock();
             
             /*m_rowMutex[row2].ReleaseMutex();
             m_rowMutex[row1].ReleaseMutex();*/
@@ -179,33 +175,31 @@ namespace Simulator
                 m_readerWriterRows[i].EnterWriteLock();
             }
 
-            try
+            
+            string[] colA = new string[m_spreadSheet.GetLength(0)];
+            string[] colB = new string[m_spreadSheet.GetLength(0)];
+
+            for (int i = 0; i < m_spreadSheet.GetLength(0); i++)
+            { 
+                colA[i] = m_spreadSheet[i, col1]; 
+                colB[i] = m_spreadSheet[i, col2];
+            }
+
+            for (int i = 0; i < colA.Length; i++)
             {
-                string[] colA = new string[m_spreadSheet.GetLength(0)];
-                string[] colB = new string[m_spreadSheet.GetLength(0)];
-
-                for (int i = 0; i < m_spreadSheet.GetLength(0); i++)
-                {
-                    colA[i] = m_spreadSheet[i, col1];
-                    colB[i] = m_spreadSheet[i, col2];
-                }
-
-                for (int i = 0; i < colA.Length; i++)
-                {
-                    string a = colA[i];
-                    string b = colB[i];
-                    m_spreadSheet[i, col1] = b;
-                    m_spreadSheet[i, col1] = a;
-                }
+                string a = colA[i];
+                string b = colB[i];
+                m_spreadSheet[i, col1] = b;
+                m_spreadSheet[i, col1] = a;
             }
             
-            finally
+            
+            
+            for (int i = m_readerWriterRows.Length - 1; i >= 0; i--)
             {
-                for (int i = m_readerWriterRows.Length - 1; i >= 0; i--)
-                {
-                    m_readerWriterRows[i].ExitWriteLock();
-                }
+                m_readerWriterRows[i].ExitWriteLock();
             }
+            
             // exchange the content of col1 and col2
             // m_rowMutex[col2].ReleaseMutex();
             // m_rowMutex[col1].ReleaseMutex();
