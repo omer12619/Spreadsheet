@@ -35,13 +35,21 @@ namespace Simulator
             }
             m_users = new Semaphore(nUsers,nUsers);//TODO maybe it should start from zero?
 
+            for (int i = 0; i < nRows; i++)
+            {
+                m_readerWriterRows[i] = new ReaderWriterLockSlim();
+            }
+
         }
         public string getCell(int row, int col)
         {
-            m_users.WaitOne();// TODO maybe the get functions need to use the mutex and not the semaphore
+            /*m_users.WaitOne();// TODO maybe the get functions need to use the mutex and not the semaphore
             string value = m_spreadSheet[row, col]; 
-            m_users.Release();
+            m_users.Release();*/
             // return the string at [row,col]
+            m_readerWriterRows[row].EnterReadLock();
+            string value = m_spreadSheet[row, col]; 
+            m_readerWriterRows[row].ExitReadLock();
             return value;
         }
         public void setCell(int row, int col, string str)
@@ -51,18 +59,27 @@ namespace Simulator
              * Then we need to release C,B,A*
              */
             
-            m_colMutex[col].WaitOne();
-            m_rowMutex[row].WaitOne();
+            /*m_colMutex[col].WaitOne();
+            m_rowMutex[row].WaitOne();*/
             // set the string at [row,col]
+            m_readerWriterRows[row].EnterWriteLock();
             m_spreadSheet[row, col] = str;
-            m_rowMutex[row].ReleaseMutex();
-            m_colMutex[col].ReleaseMutex();
+            m_readerWriterRows[row].ExitWriteLock();
+            /*m_rowMutex[row].ReleaseMutex();
+            m_colMutex[col].ReleaseMutex();*/
 
         }
         public Tuple<int, int> searchString(string str)
         {
             // return first cell indexes that contains the string (search from first row to the last row)
+            
+            /*
             m_users.WaitOne();
+            */
+            for (int i = 0; i < m_readerWriterRows.Length; i++)
+            {
+                m_readerWriterRows[i].EnterReadLock();
+            }
             int row, col;
             for (int i = 0; i < m_spreadSheet.GetLength(0); i++)
             {
@@ -71,12 +88,20 @@ namespace Simulator
                     if (m_spreadSheet[i, j] == str)
                     {
                         Tuple<int, int> res = new Tuple<int, int>(i, j);
+                        /*
                         m_users.Release();
+                        */
+                        for (int k = m_readerWriterRows.Length - 1 ; k => 0; k++)
+                        {
+                            m_readerWriterRows[k].EnterReadLock();
+                        }
                         return res;
                     }
                 }
             }
+            /*
             m_users.Release();
+            */
             return null;
         }
         public void exchangeRows(int row1, int row2)
