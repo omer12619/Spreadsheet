@@ -132,8 +132,15 @@ namespace Simulator
         }
         public void exchangeRows(int row1, int row2)
         {
-            m_readerWriterRows[row1].EnterWriteLock();
-            m_readerWriterRows[row2].EnterWriteLock();
+            if (!m_readerWriterRows[row1].IsWriteLockHeld)
+            {
+                m_readerWriterRows[row1].EnterWriteLock();
+            }
+
+            if (!m_readerWriterRows[row2].IsWriteLockHeld)
+            {
+                m_readerWriterRows[row2].EnterWriteLock();
+            }
 
             /*
             m_rowMutex[row1].WaitOne();
@@ -203,7 +210,10 @@ namespace Simulator
             {
                 for (int i = m_readerWriterRows.Length - 1; i >= 0; i--)
                 {
-                    m_readerWriterRows[i].ExitWriteLock();
+                    if (m_readerWriterRows[i].IsReadLockHeld == true)
+                    {
+                        m_readerWriterRows[i].ExitReadLock();
+                    }
                 }
             }
             // exchange the content of col1 and col2
