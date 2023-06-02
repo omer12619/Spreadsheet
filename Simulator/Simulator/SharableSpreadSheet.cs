@@ -399,7 +399,7 @@ namespace Simulator
                 Mutex[] newLocks = new Mutex[m_rowMutex.Length + 1];
                 */
             
-                for (int i = 0; i < m_rowMutex.Length; i++)
+                for (int i = 0; i < m_readerWriterRows.Length; i++)
                 {
                     newLocks[i] = m_readerWriterRows[i];
                 }
