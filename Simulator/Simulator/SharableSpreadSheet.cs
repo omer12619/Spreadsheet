@@ -13,7 +13,7 @@ namespace Simulator
      
 
         private ReaderWriterLockSlim[] m_readerWriterRows;
-        
+        private ReaderWriterLock pen;
 
         public SharableSpreadSheet(int nRows, int nCols, int nUsers = -1)
         {
@@ -21,7 +21,8 @@ namespace Simulator
             m_spreadSheet = new string[nRows, nCols];
             
             m_readerWriterRows = new ReaderWriterLockSlim[nRows];
-        
+
+            this.pen = new ReaderWriterLock();
             
             for (int i = 0; i < nRows; i++)
             {
@@ -31,12 +32,16 @@ namespace Simulator
         }
         public string getCell(int row, int col)
         {
-        
             m_readerWriterRows[row].EnterReadLock();
-            string value = m_spreadSheet[row, col];
-            m_readerWriterRows[row].ExitReadLock();
-            return value;
-            
+            try
+            {
+                string value = m_spreadSheet[row, col];
+                return value;
+            }
+            finally
+            {
+                m_readerWriterRows[row].ExitReadLock();
+            }
         }
         public void setCell(int row, int col, string str)
         {
@@ -540,33 +545,26 @@ namespace Simulator
 
         public int getCol()
         {
-           
-            for(int i = 0; i < m_readerWriterRows.Length; i++)
+            int res = 0;
+            lock (pen)
             {
-                m_readerWriterRows[i].EnterReadLock();
+
+                 res = m_spreadSheet.GetLength(1);
             }
-            int res =  m_spreadSheet.GetLength(1);
            
-            for (int i = m_readerWriterRows.Length - 1; i >= 0; i--)
-            {
-                m_readerWriterRows[i].ExitReadLock();
-            }
             return res;
         }
 
         public int getRow()
         {
-            
-            for(int i = 0; i < m_readerWriterRows.Length; i++)
+            int res = 0;
+            lock (pen)
             {
-                m_readerWriterRows[i].EnterReadLock();
+
+                 res = m_spreadSheet.GetLength(0);
             }
-            int res =  m_spreadSheet.GetLength(0);
            
-            for (int i = m_readerWriterRows.Length - 1; i >= 0; i--)
-            {
-                m_readerWriterRows[i].ExitReadLock();
-            }
+
             return res;
         }
     }

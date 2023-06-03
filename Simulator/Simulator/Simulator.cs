@@ -83,6 +83,12 @@ namespace Simulator
             }
 
 
+            for (int i = 0; i < usres; i++)
+            {
+                threads[i].Join(); // Wait for each user thread to complete
+            }
+
+
 
         }
 
@@ -93,7 +99,7 @@ namespace Simulator
             for (int i = 0; i < nOperations; i++)
             {
                 Random random = new Random();
-                int functionNumber = random.Next(1, 13); // Randomly choose an index from the func_id list
+                int functionNumber = random.Next(1,13); // Randomly choose an index from the func_id list
 
                 // Get the function number from the func_id list using the generated index
                 
@@ -127,7 +133,7 @@ namespace Simulator
                    
 
                     this.sharableSpreadSheet.setCell(rows, colm, animeNames[0]);
-                    Console.WriteLine("user number: " + userId + " set cell row: " + rows + " set colm: " + colm + " to a string :" + animeNames[0]);
+                    Console.WriteLine("user number : " + userId + " set cell row: " + rows + " set colm: " + colm + " to a string :" + animeNames[0]);
                 }
                 else if (functionNumber == 3)
                 {
@@ -148,7 +154,7 @@ namespace Simulator
                    
 
                     this.sharableSpreadSheet.exchangeRows(row1,row2);
-                    Console.WriteLine("user number: " + userId + " exchange rows : "+ row1+" , "+row2);
+                    Console.WriteLine("user number:  " + userId + " exchange rows :  "+ row1+"  ,  "+row2);
 
                 }
                 else if (functionNumber == 5)
@@ -163,7 +169,7 @@ namespace Simulator
                     
 
                     this.sharableSpreadSheet.exchangeCols( colm1,  colm2);
-                    Console.WriteLine("user number: " + userId + " exchange colm : " + colm1 + " , " + colm2);
+                    Console.WriteLine("user number: " + userId + " exchange colm : " + colm1 + "  ,  " + colm2);
 
                 }
                 else if (functionNumber == 6)
@@ -201,7 +207,7 @@ namespace Simulator
                    
 
                     this.sharableSpreadSheet.searchInRange( col1,  col2,  row1,  row2, animeNames[0]);
-                    Console.WriteLine("user number: " + userId + " search in range colm : " + col1+" ,"+ col2 + "search in range rows: "+row1+", "+row2 + " the string " + animeNames[0]);
+                    Console.WriteLine("user number: " + userId + " search in range colm : " + col1+"  , "+ col2 + "search in range rows: "+row1+" , "+row2 + "  the string " + animeNames[0]);
 
                 }
                 else if (functionNumber == 9)
@@ -210,7 +216,7 @@ namespace Simulator
                     int row1 = random.Next(0, this.sharableSpreadSheet.getRow());
                    
                     this.sharableSpreadSheet.addRow( row1);
-                    Console.WriteLine("user number : " + userId + "add " + row1 + " rows to the sheet");
+                    Console.WriteLine("user number : " + userId + " add " + row1 + " rows to the sheet");
 
                 }
                 else if (functionNumber == 10)
@@ -219,7 +225,7 @@ namespace Simulator
                     int col1 = random.Next(0, this.sharableSpreadSheet.getCol());
                    
                     this.sharableSpreadSheet.addCol( col1);
-                    Console.WriteLine("user number : " + userId + "add " + col1 + " colm to the sheet");
+                    Console.WriteLine("user number : " + userId +  " add " + col1 + " colm to the sheet");
                 }
 
                 else if (functionNumber == 11)
@@ -227,7 +233,7 @@ namespace Simulator
                     Shuffle(animeNames);
                     
 
-                    Console.WriteLine("user number : " + userId + "get all the positions of the string " + animeNames[0]+ " : "+ this.sharableSpreadSheet.FindAll(animeNames[0], false));
+                    Console.WriteLine("user number : " + userId + " get all the positions of the string " + animeNames[0]+ " :  "+ ConvertTupleArrayToString(this.sharableSpreadSheet.FindAll(animeNames[0], false)));
 
                 }
                 else if (functionNumber == 12)
@@ -240,7 +246,7 @@ namespace Simulator
                   
 
                     this.sharableSpreadSheet.SetAll(str1, str2, false);
-                    Console.WriteLine("user number : " + userId + " set all "+str1+" to " +str2);
+                    Console.WriteLine("user number : " + userId + "  set all  "+str1+"  to  " +str2);
 
 
                 }
@@ -252,16 +258,14 @@ namespace Simulator
 
                 }
 
+               
 
 
                 Thread.Sleep(this._msSleep);
 
             }
 
-            for (int i = 0; i < usres; i++)
-            {
-                threads[i].Join(); // Wait for each user thread to complete
-            }
+            
 
 
 
@@ -278,6 +282,32 @@ namespace Simulator
                 list[i] = list[j];
                 list[j] = temp;
             }
+        }
+        public static string ConvertTupleArrayToString(Tuple<int, int>[] tupleArray)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append("[");
+
+            for (int i = 0; i < tupleArray.Length; i++)
+            {
+                Tuple<int, int> tuple = tupleArray[i];
+
+                sb.Append("(");
+                sb.Append(tuple.Item1);
+                sb.Append(",");
+                sb.Append(tuple.Item2);
+                sb.Append(")");
+
+                if (i < tupleArray.Length - 1)
+                {
+                    sb.Append(", ");
+                }
+            }
+
+            sb.Append("]");
+
+            return sb.ToString();
         }
 
 
